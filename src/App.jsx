@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginSelect from './screens/LoginSelect';
+import LoginScreen from './screens/LoginScreen';
 import HomeDashboard from './screens/HomeDashboard';
 import ChampionDashboard from './screens/ChampionDashboard';
 import DonorFlow from './screens/DonorFlow';
@@ -17,8 +17,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginSelect />} />
+        <Route path="/" element={<LoginScreen />} />
+        <Route path="/login" element={<LoginScreen />} />
         <Route path="/home" element={<HomeDashboard />} />
         <Route path="/champion-dashboard" element={<ChampionDashboard />} />
         <Route path="/donate" element={<DonorFlow />} />
