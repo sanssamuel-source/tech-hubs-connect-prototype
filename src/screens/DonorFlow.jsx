@@ -2,101 +2,110 @@ import React, { useState } from 'react';
 import Layout from '../components/Layout/Layout';
 import Card from '../components/UI/Card';
 import Button from '../components/UI/Button';
-import { useNavigate } from 'react-router-dom';
-
-/* Feature 1: Donate Here Section */
+import Input from '../components/UI/Input';
 
 export default function DonorFlow() {
-  const navigate = useNavigate();
-  const [donateType, setDonateType] = useState(null); // 'cash', 'item'
-  const [selectedItem, setSelectedItem] = useState('');
+  const [step, setStep] = useState('dashboard'); // dashboard, donate, checkout
+  const [amount, setAmount] = useState('');
+  
+  const handleDonate = (val) => {
+    setAmount(val);
+    setStep('checkout');
+  };
 
-  const renderHome = () => (
-    <>
-        <h2 style={{ marginBottom: '0.5rem' }}>Make an Impact</h2>
-        
-        {/* Statistics / Monitor Impact */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '1.5rem' }}>
-           <Card style={{ textAlign: 'center', padding: '1rem' }}>
-              <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-primary)' }}>1,240</div>
-              <div style={{ fontSize: '11px', color: '#666' }}>Students Trained</div>
-           </Card>
-           <Card style={{ textAlign: 'center', padding: '1rem' }}>
-              <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#00B894' }}>85%</div>
-              <div style={{ fontSize: '11px', color: '#666' }}>Employment Rate</div>
-           </Card>
-        </div>
 
-        {/* Success Stories */}
-        <h3 style={{ fontSize: '1rem' }}>Success Stories</h3>
-        <Card style={{ marginBottom: '1.5rem' }}>
-           <div style={{ display: 'flex', gap: '1rem' }}>
-              <div style={{ width: '60px', height: '60px', background: '#ddd', borderRadius: '50%' }}></div>
-              <div>
-                 <b>Fatmata changed the world!</b>
-                 <p style={{ fontSize: '12px', color: '#555', margin: '4px 0' }}>After receiving a donated laptop, she built an app to track malaria cases.</p>
-              </div>
-           </div>
-        </Card>
 
-        {/* Donation Options */}
-        <h3 style={{ fontSize: '1rem' }}>How to Help</h3>
-        <Card onClick={() => setDonateType('item')} style={{ cursor: 'pointer', border: '2px solid transparent', '&:hover': { borderColor: 'var(--color-primary)' } }}>
-           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ fontSize: '2rem' }}>🎅</div>
-              <div>
-                 <b>Be a Santa!</b>
-                 <p style={{ fontSize: '12px', margin: 0, color: '#666' }}>Donate computers, food, clothes or water.</p>
-              </div>
-           </div>
-        </Card>
 
-        <Card onClick={() => setDonateType('cash')} style={{ marginTop: '10px', cursor: 'pointer' }}>
-           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ fontSize: '2rem' }}>💳</div>
-              <div>
-                 <b>Support a Hub</b>
-                 <p style={{ fontSize: '12px', margin: 0, color: '#666' }}>Financial support for internet & electricity.</p>
-              </div>
-           </div>
-        </Card>
-    </>
-  );
-
-  const renderItemDonation = () => (
-     <>
-        <button onClick={() => setDonateType(null)} style={{ background: 'none', border: 'none', marginBottom: '1rem', cursor: 'pointer' }}>← Back</button>
-        <h2>Be a Santa 🎅</h2>
-        <p style={{ fontSize: '13px', color: '#666' }}>What would you like to donate?</p>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-           {['Computers', 'Food Items', 'Clothes', 'Water'].map(item => (
-              <div 
-                key={item}
-                onClick={() => setSelectedItem(item)}
-                style={{ 
-                   padding: '1.5rem', background: selectedItem === item ? '#FFEAA7' : 'white', 
-                   border: selectedItem === item ? '2px solid #FDCB6E' : '1px solid #eee',
-                   borderRadius: '12px', textAlign: 'center', cursor: 'pointer'
-                }}
-              >
-                 {item}
-              </div>
-           ))}
-        </div>
-
-        {selectedItem && (
-            <div style={{ marginTop: '2rem' }}>
-                <p>Great! You are donating <b>{selectedItem}</b>.</p>
-                <Button variant="donor" onClick={() => alert('Thank you! A champion will contact you to arrange collection.')}>Confirm Donation</Button>
+  if (step === 'checkout') {
+    return (
+      <Layout>
+        <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+          <h2>Confirm Donation</h2>
+          <p style={{ fontSize: '1.5rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>
+            ${amount}
+          </p>
+          <div style={{ margin: '2rem 0', padding: '1rem', background: '#f9f9f9', borderRadius: '8px' }}>
+            <p>Mock Payment Gateway</p>
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+               <div style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}>💳 Card</div>
+               <div style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}>📱 Mobile Money</div>
             </div>
-        )}
-     </>
-  );
+          </div>
+          <Button variant="primary" onClick={() => { alert('Donation Successful!\nReceipt emailed.'); setStep('dashboard'); }}>
+            Pay Now
+          </Button>
+          <Button variant="outline" onClick={() => setStep('donate')} style={{ marginTop: '1rem' }}>
+            Back
+          </Button>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (step === 'donate') {
+     return (
+        <Layout>
+            <h2>Make a Donation</h2>
+            <Card title="Cash Donation" description="Support hub operations">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', marginBottom: '1rem' }}>
+                    {[10, 50, 100].map(val => (
+                        <button 
+                            key={val}
+                            onClick={() => handleDonate(val)} 
+                            className={`btn ${amount === val ? 'btn-primary' : 'btn-outline'}`}
+                        >${val}</button>
+                    ))}
+                </div>
+                <Input 
+                    type="number" 
+                    placeholder="Other Amount" 
+                    value={amount} 
+                    onChange={(e) => setAmount(e.target.value)} 
+                />
+                <Button variant="primary" onClick={() => setStep('checkout')} style={{marginTop:'1rem'}} disabled={!amount}>
+                    Proceed
+                </Button>
+            </Card>
+
+            <Card title="Donate Items" description="We need specific hardware">
+                <ul style={{ paddingLeft: '20px', color: '#666' }}>
+                    <li>Macbook Pro 2015+</li>
+                    <li>Routers (4G/LTE)</li>
+                    <li>Projectors</li>
+                </ul>
+                <Button variant="outline">I have equipment to ship</Button>
+            </Card>
+        </Layout>
+     )
+  }
 
   return (
     <Layout>
-      {donateType === 'item' ? renderItemDonation() : renderHome()}
+        <h2>Your Impact</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+            <Card className="stat-card" style={{ textAlign: 'center', padding: '1rem' }}>
+                <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--color-primary)' }}>50</div>
+                <div style={{ fontSize: '12px', color: '#666' }}>Hubs Supported</div>
+            </Card>
+            <Card className="stat-card" style={{ textAlign: 'center', padding: '1rem' }}>
+                <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--color-accent)' }}>15k</div>
+                <div style={{ fontSize: '12px', color: '#666' }}>Learners</div>
+            </Card>
+        </div>
+
+        <h3>Success Stories</h3>
+        <Card title="Makeni Students Graduate" description="20 students completed the digital literacy program thanks to donated laptops.">
+            <div style={{ height: '150px', background: '#eee', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px' }}>
+                📷 Photo
+            </div>
+            <div style={{ marginTop: '1rem' }}>
+                <Button variant="outline">Read Full Story</Button>
+            </div>
+        </Card>
+
+        <Button variant="primary" onClick={() => setStep('donate')} style={{ marginTop: '1rem', padding: '16px' }}>
+           🎁 Donate Now
+        </Button>
     </Layout>
   );
 }

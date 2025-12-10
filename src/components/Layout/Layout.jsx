@@ -25,7 +25,7 @@ export default function Layout({ children }) {
       </div>
       <header className="app-header">
         <div className="brand-logo" onClick={() => navigate('/home')} style={{cursor:'pointer'}}>
-          <img src="/logo.png" alt="EduCube x UNICEF" style={{ height: '40px', objectFit: 'contain' }} />
+          <span>🔷</span> TechHubs
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <button onClick={() => navigate('/notifications')} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer' }}>🔔</button>

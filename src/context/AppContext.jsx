@@ -1,75 +1,39 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { HUBS, ROLES, MOCK_OUTREACH, MOCK_COURSES } from '../data/mockData';
+import React, { createContext, useState, useContext } from 'react';
+import { ROLES, HUBS } from '../data/mockData';
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  // 1. Initialize State from LocalStorage or Defaults
-  const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem('thc_user');
-    return saved ? JSON.parse(saved) : null;
-  });
-
-  const [currentHub, setCurrentHub] = useState(() => {
-    const saved = localStorage.getItem('thc_hub');
-    return saved ? JSON.parse(saved) : null;
-  });
-
-  const [inventory, setInventory] = useState(() => {
-     const saved = localStorage.getItem('thc_inventory');
-     return saved ? JSON.parse(saved) : [];
-  });
-
-  const [volunteers, setVolunteers] = useState(() => {
-    const saved = localStorage.getItem('thc_volunteers');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // 2. Persist State Changes
-  useEffect(() => localStorage.setItem('thc_user', JSON.stringify(currentUser)), [currentUser]);
-  useEffect(() => localStorage.setItem('thc_hub', JSON.stringify(currentHub)), [currentHub]);
-  useEffect(() => localStorage.setItem('thc_inventory', JSON.stringify(inventory)), [inventory]);
-  useEffect(() => localStorage.setItem('thc_volunteers', JSON.stringify(volunteers)), [volunteers]);
-
-  // Actions
-  const login = (roleId, name) => {
+  const [currentUser, setCurrentUser] = useState(null); // { role: 'donor' | 'volunteer' | 'champion' | 'admin', ... }
+  const [currentHub, setCurrentHub] = useState(null);
+  
+  const login = (roleId) => {
     const role = ROLES.find(r => r.id === roleId);
-    setCurrentUser({ ...role, name: name || 'User' });
+    setCurrentUser({ role: roleId, name: "Test User", ...role });
+    // Default hub for testing if champion
+    if (roleId === 'champion') {
+      setCurrentHub(HUBS[0]);
+    }
   };
 
   const logout = () => {
     setCurrentUser(null);
     setCurrentHub(null);
-    localStorage.clear();
   };
 
   const selectHub = (hubId) => {
-    const hub = HUBS.find(h => h.id === parseInt(hubId));
+    const hub = HUBS.find(h => h.id === hubId);
     setCurrentHub(hub);
   };
 
-  const addInventoryItem = (item) => {
-      setInventory([...inventory, { ...item, id: Date.now() }]);
-  };
-
-  const registerVolunteer = (data) => {
-      setVolunteers([...volunteers, { ...data, id: Date.now(), status: 'Pending' }]);
-  };
-
   return (
-    <AppContext.Provider value={{
-      currentUser,
-      currentHub,
-      hubs: HUBS,
-      activeCourses: MOCK_COURSES,
-      outreach: MOCK_OUTREACH,
-      inventory,
-      volunteers,
-      login,
+    <AppContext.Provider value={{ 
+      currentUser, 
+      currentHub, 
+      login, 
       logout,
       selectHub,
-      addInventoryItem,
-      registerVolunteer
+      hubs: HUBS
     }}>
       {children}
     </AppContext.Provider>
