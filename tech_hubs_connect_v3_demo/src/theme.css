@@ -1,0 +1,82 @@
+:root {
+  /* Modern Tech & School Palette */
+  --color-primary: #0061f2; /* Vibrant Blue */
+  --color-primary-light: #e0e9ff;
+  --color-accent: #00d4ff; /* Tech Cyan */
+  --color-accent-gradient: linear-gradient(135deg, #0061f2 0%, #00d4ff 100%);
+  
+  --color-background: #f8f9fc;
+  --color-surface: #ffffff;
+  --color-surface-glass: rgba(255, 255, 255, 0.85); /* Glassmorphism */
+  
+  --color-text-main: #1e293b; /* Slate 800 */
+  --color-text-mutated: #64748b; /* Slate 500 */
+  
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* Typography */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-base: 16px;
+  
+  /* Modern Spacing & Layout */
+  --border-radius-sm: 12px;
+  --border-radius-md: 20px;
+  --border-radius-lg: 32px;
+  
+  /* Rich Effects */
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 20px rgba(0, 97, 242, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: #e2e8f0;
+  color: var(--color-text-main);
+  /* Tech Pattern Background */
+  background-image: 
+    radial-gradient(#cbd5e1 1px, transparent 1px),
+    radial-gradient(#cbd5e1 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile Wrapper - iPhone Style */
+#root {
+  width: 100%;
+  max-width: 400px;
+  height: 850px;
+  margin: 20px auto;
+  background-color: var(--color-background);
+  position: relative;
+  overflow: hidden;
+  border-radius: 48px;
+  border: 14px solid #1e293b;
+  box-shadow: 
+    0 0 0 4px #475569,
+    0 50px 100px -20px rgba(50, 50, 93, 0.25),
+    0 30px 60px -30px rgba(0, 0, 0, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
